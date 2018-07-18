@@ -43,22 +43,29 @@ func (this *WordDictionary) AddWord(word string) {
 
 /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
 func (this *WordDictionary) Search(word string) bool {
-	strbyte := []byte(word)
+
+	//fmt.Println(fmt.Sprintf("%s", word))
+	//fmt.Println(fmt.Sprintf("%+v", this))
 	if word == "" {
 		return this.isword
 	}
+	strbyte := []byte(word)
 	for index, char := range strbyte {
 		if char == '.' {
 			for _, child := range this.childs {
 				if child != nil {
-					return child.Search(string(strbyte[index+1:]))
+					if child.Search(string(strbyte[index+1:])) == true {
+						return true
+					}
 				}
 			}
+			return false
 		} else {
 			child := this.childs[char-'a']
 			if child != nil {
 				return child.Search(string(strbyte[index+1:]))
 			} else {
+				//fmt.Println(fmt.Sprintf("not find %d", char))
 				return false
 			}
 		}
